@@ -108,7 +108,7 @@ export const resolvers = {
       const apiKey = Deno.env.get("Api_Key");
       if (!apiKey) throw new Error(" Error falta api key");
       let url = `https://api.api-ninjas.com/v1/city?name=${parent.ciudad}`;
-      const data = await fetch(url, {
+      let data = await fetch(url, {
         headers: {
           "X-Api-Key": apiKey,
         },
@@ -120,14 +120,14 @@ export const resolvers = {
       const { longitude } = response[0];
       url = `https://api.api-ninjas.com/v1/weather?lat=${latitude}&lon=${longitude}`;
 
-      const data2 = await fetch(url, {
+      data = await fetch(url, {
         headers: {
           "X-Api-Key": apiKey,
         },
       });
       console.log("latitud, ", latitude, "logitud", longitude);
-      console.log(data2.status, data2.statusText);
-      if (data2.status !== 200) throw new Error("Error api weather");
+      console.log(data.status, data.statusText);
+      if (data.status !== 200) throw new Error("Error api weather");
       const response2: APIWeather = await data.json();
       return (
         "Temperatura: " +
@@ -140,7 +140,7 @@ export const resolvers = {
       const apiKey = Deno.env.get("Api_Key");
       if (!apiKey) throw new Error(" Error falta api key");
       let url = `https://api.api-ninjas.com/v1/geocoding?city=${parent.ciudad}&country=${parent.pais}`;
-      const data = await fetch(url, {
+      let data = await fetch(url, {
         headers: {
           "X-Api-Key": apiKey,
         },
@@ -150,12 +150,12 @@ export const resolvers = {
       const { latitude, longitude } = response[0];
       url = `https://api.api-ninjas.com/v1/worldtime?lat=${latitude}&lon=${longitude}`;
 
-      const data2 = await fetch(url, {
+      data = await fetch(url, {
         headers: {
           "X-Api-Key": apiKey,
         },
       });
-      if (data2.status !== 200) throw new Error("Error api tiempo");
+      if (data.status !== 200) throw new Error("Error api tiempo");
       const response2: APITime = await data.json();
       const hora = response2.hour;
       const minutos = response2.minute;
